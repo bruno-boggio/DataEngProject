@@ -9,7 +9,7 @@ Resources created on Azure.
 (Data Lake)
 - Azure Data Factory
 - Azure Sql Database
-- Azure Server
+- Azure SQL Server
 - Azure Databricks
 
 
