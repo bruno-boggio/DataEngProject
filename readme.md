@@ -11,5 +11,10 @@ Resources created on Azure.
 - Azure Sql Database
 - Azure SQL Server
 - Azure Databricks
+- key vault
+- app registration
+
+
+
 
 
