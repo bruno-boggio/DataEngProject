@@ -22,17 +22,3 @@ def mount_adls(container_name):
     source = f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/",
     mount_point = f"/mnt/{storage_account_name}/{container_name}",
     extra_configs = configs)
-
-# COMMAND ----------
-
-dbutils.fs.ls("/mnt/tibiadataeng/landing-zone/parquet_tb_files/guilds")
-
-# COMMAND ----------
-
-# Ler o arquivo Parquet
-df = spark.read.parquet('/mnt/tibiadataeng/landing-zone/parquet_tb_files/guilds/guilds-2025-01-10.parquet')
-
-# Exibir as primeiras 10 linhas para verificar os dados
-display(df)
-
-# df = spark.read.parquet('/mnt/tibiadataeng/landing-zone/parquet_tb_files/accounts')

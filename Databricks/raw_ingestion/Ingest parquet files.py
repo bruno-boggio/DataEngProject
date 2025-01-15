@@ -3,43 +3,54 @@ from pyspark.sql.functions import current_timestamp
 
 # COMMAND ----------
 
-# Path to the Data Lake mount
-base_path = "/mnt/tibiadataeng/landing-zone/parquet_tb_files/"
-print(f'Base path: {base_path}')
-
-# List all directories (tables) inside the folder
-tabela_paths = dbutils.fs.ls(base_path)
-
-table_names = [tabela_path.name.strip("/") for tabela_path in tabela_paths]
-print(f'Table names: {table_names}')
+# Defining widgets parameters
+# dbutils.widgets.text("base_path", "/mnt/tibiadataeng/landing-zone/parquet_tb_files/")
+# dbutils.widgets.text("schema", "dbo")
 
 
 # COMMAND ----------
 
-# Defining the schema
-schema = 'dbo'
+# Getting widgets values
+base_path = dbutils.widgets.get("base_path")
+schema = dbutils.widgets.get("schema")
+print(f'Base path: {base_path}')
+print(f'Schema: {schema}')
 
-# For each directory (table) inside the folder
-for tabela_path in tabela_paths:
-    if tabela_path.isDir():
-        # Table name (directory)
-        table_name = tabela_path.name.strip("/")  # Removes any trailing slash, if present
+
+# COMMAND ----------
+
+# List directory tables
+try:
+    table_paths = dbutils.fs.ls(base_path)
+    table_names = [table_path.name.strip("/") for table_path in table_paths if table_path.isDir()]
+    print(f'Table names: {table_names}')
+except Exception as e:
+    print(f"Erro ao listar os diretórios no path {base_path}: {e}")
+    raise e
+
+# COMMAND ----------
+
+# Process each table
+for table_path in table_paths:
+    if table_path.isDir():
+        table_name = table_path.name.strip("/")  # Table's name (diretório)
         print(f"Processing table {table_name}...")
 
-        # Path to the Parquet file with the correct name
+        # Path parquet file
         parquet_path = f"{base_path}{table_name}/{schema}.{table_name}.parquet"
         print(f'Parquet path: {parquet_path}')
 
-        # Read the Parquet file
+        # Read parquet file
         df = spark.read.parquet(parquet_path)
         print(f"Reading {df.count()} records from table {table_name}...")
 
-        # Add the current timestamp column
+        # Add timestamp column
         df = df.withColumn("timestamp", current_timestamp())
 
-        # # Create the Delta table in the database
+        # Create delta table in the raw database
         df.write.format("delta").option("mergeSchema", "true").mode("overwrite").saveAsTable(f"tibia_lakehouse_raw.{table_name}")
         print(f"Table {table_name} successfully created in the tibia_lakehouse_raw database!")
+
 
 # COMMAND ----------
 
