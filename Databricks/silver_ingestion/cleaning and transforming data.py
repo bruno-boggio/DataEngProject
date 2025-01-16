@@ -1,5 +1,6 @@
 # Databricks notebook source
 from pyspark.sql import functions as F
+from pyspark.sql.types import IntegerType
 
 
 # COMMAND ----------
@@ -14,7 +15,6 @@ accounts_df = (
     spark.read.table("tibia_lakehouse_raw.accounts") # Read the raw data
     .drop("insertion_timestamp") # Drop insertion_timestamp" 
     .dropDuplicates(["email"]) # Remove duplicates based on "email"
-    .withColumnRenamed("player_name", "char_name") # Rename "player_name" to "char_name"
     .withColumnRenamed("timestamp", "raw_timestamp") # Rename "timestamp" to "raw_timestamp"
     .withColumn("silver_timestamp", F.current_timestamp()) # Add the current timestamp as "silver_timestamp"
 )
@@ -29,26 +29,48 @@ accounts_df.write.format("delta").option("mergeSchema",True).mode("overwrite").s
 print("Table accounts has been saved!")
 
 
+
+
 # COMMAND ----------
 
- # Read the raw data from the "players" table and perform transformations
+# Read raw data from the "players" table in the raw layer
 players_df = (
-    spark.read.table("tibia_lakehouse_raw.players")  # Read the raw data
-    .drop("insertion_timestamp")  # Drop the unwanted "insertion_timestamp" column
-    .dropDuplicates(["player_name"])  # Remove duplicates based on "player_name"
+    spark.read.table("tibia_lakehouse_raw.players")  # Read the raw table
+    .drop("insertion_timestamp")  # Remove unnecessary column
+    .dropDuplicates(["player_name"])  # Remove duplicates based on the "player_name" field
     .withColumnRenamed("player_name", "char_name")  # Rename "player_name" to "char_name"
     .withColumnRenamed("timestamp", "raw_timestamp")  # Rename "timestamp" to "raw_timestamp"
-    .withColumn("silver_timestamp", F.current_timestamp())  # Add the current timestamp as "silver_timestamp"
+    .withColumn("silver_timestamp", F.current_timestamp())  # Add the current timestamp
 )
 
-# Display the cleaned and transformed data
+# Update the "distance_fighting" column for vocation "Paladin" with random values between 11 and 100
+players_df = players_df.withColumn(
+    "distance_fighting",
+    F.when(
+        players_df.vocation == "Paladin",
+        (F.rand() * 89 + 11).cast("int")  # Generate random values between 11 and 100
+    ).otherwise(players_df.distance_fighting)  # Keep original values for other vocations
+)
+
+# Step 3: Rearrange columns to move "raw_timestamp" to the penultimate position
+columns = players_df.columns
+columns.remove("raw_timestamp")  # Remove "raw_timestamp" temporarily from the list
+columns.insert(-1, "raw_timestamp")  # Insert "raw_timestamp" in the penultimate position
+
+# Reorder the DataFrame based on the new column order
+players_df = players_df.select(columns)
+
+# Step 4: Display the transformed data (optional)
 players_df.display()
 
-# Save the transformed data to the silver layer (tibia_lakehouse_silver)
-players_df.write.format("delta").mode("overwrite").saveAsTable("tibia_lakehouse_silver.players")
+# Step 5: Save the transformed data to the Silver Layer (table tibia_lakehouse_silver.players)
+players_df.write.format("delta") \
+    .option("mergeSchema", "true") \
+    .mode("overwrite") \
+    .saveAsTable("tibia_lakehouse_silver.players")
 
-# Print a confirmation message
-print(f"Table players has been saved!")
+# Step 6: Confirmation message
+print("Table 'players' has been saved to the Silver Layer!")
 
 
 # COMMAND ----------
@@ -76,7 +98,7 @@ print(f"Table achievements has been saved!")
 # Read the raw data from the "guilds" table
 guilds_df = spark.read.table("tibia_lakehouse_raw.guilds")
 
-# Transformations: Drop the "insertion_timestamp" column, remove duplicates, rename "timestamp", and add "silver_timestamp"
+# Perform transformations: Drop the "insertion_timestamp" column, remove duplicates, rename "timestamp", and add "silver_timestamp"
 guilds_df = (
     guilds_df
     .drop("insertion_timestamp")  # Drop the unwanted column
@@ -85,11 +107,19 @@ guilds_df = (
     .withColumn("silver_timestamp", F.current_timestamp())  # Add the current timestamp column
 )
 
+# Rearrange columns to move "raw_timestamp" to the penultimate position
+columns = guilds_df.columns
+columns.remove("raw_timestamp")  # Remove "raw_timestamp" temporarily from the list
+columns.insert(-1, "raw_timestamp")  # Insert "raw_timestamp" in the penultimate position
+
+# Reorder the DataFrame based on the new column order
+guilds_df = guilds_df.select(columns)
+
 # Display the cleaned data
 guilds_df.display()
 
 # Save the cleaned and transformed data to the silver layer
-guilds_df.write.format("delta").mode("overwrite").saveAsTable("tibia_lakehouse_silver.guilds")
+guilds_df.write.format("delta").option("mergeSchema", "true").mode("overwrite").saveAsTable("tibia_lakehouse_silver.guilds")
 
 # Print a confirmation message
 print(f"Table guilds has been saved!")
@@ -121,7 +151,7 @@ print(f"Table items has been saved!")
 # Read the raw data from the "transactions" table
 transactions_df = spark.read.table('tibia_lakehouse_raw.transactions')
 
-# Drop the unwanted "insertion_timestamp" column
+# Perform transformations: Drop the unwanted "insertion_timestamp" column, remove duplicates, rename "timestamp", and add "silver_timestamp"
 transactions_df = (
     transactions_df
     .drop('insertion_timestamp')  # Removing unnecessary column "insertion_timestamp"
@@ -130,13 +160,21 @@ transactions_df = (
     .withColumn('silver_timestamp', F.current_timestamp())  # Adding the current timestamp as "silver_timestamp"
 )
 
-# Display the cleaned DataFrame
+# Rearrange columns to move "raw_timestamp" to the penultimate position
+columns = transactions_df.columns
+columns.remove("raw_timestamp")  # Remove "raw_timestamp" temporarily from the list
+columns.insert(-1, "raw_timestamp")  # Insert "raw_timestamp" in the penultimate position
+
+# Reorder the DataFrame based on the new column order
+transactions_df = transactions_df.select(columns)
+
+# Step 4: Display the cleaned DataFrame
 transactions_df.display()
 
-# Save the cleaned DataFrame to the "tibia_lakehouse_silver" layer
-transactions_df.write.format("delta").mode("overwrite").saveAsTable("tibia_lakehouse_silver.transactions")
+# Step 5: Save the cleaned DataFrame to the "tibia_lakehouse_silver" layer
+transactions_df.write.format("delta").option("mergeSchema","true").mode("overwrite").saveAsTable("tibia_lakehouse_silver.transactions")
 
-# Print a confirmation message
+# Step 6: Print a confirmation message
 print(f"Table transactions has been saved!")
 
 
@@ -144,3 +182,7 @@ print(f"Table transactions has been saved!")
 
 # MAGIC %md
 # MAGIC **Creating tables through joins**
+
+# COMMAND ----------
+
+
