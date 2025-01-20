@@ -19,8 +19,9 @@ Azure Databricks
 **Databricks**:
 
 Databricks Clusters  
-Databricks Notebooks  
-Languages & Formats:
+Databricks Notebooks   
+
+Languages & Formats:   
 
 Python (PySpark)  
 SQL  
@@ -37,11 +38,12 @@ Storage: The processed data is stored in optimized formats for further analysis 
 Data Flow Overview:  
 Azure SQL Database → ADF Pipelines → Data Lake (bronze, silver, gold) → Databricks Processing  
 
-<img src="./assets/architecture.png" width="600">
-
+<p align="center">
+<img src="./assets/architecture.png" width="600" margin="0 auto">
+</p>
 
 **Steps Implemented** 
-  
+
 1.  Resource Setup on Azure  
 Created an Azure Resource Group to manage resources.  
 Configured an Azure Storage Account with hierarchical namespace enabled to act as the Data Lake.  
@@ -49,9 +51,9 @@ Deployed Azure SQL Server and SQL Database to host Tibia-related data.
 Set up Azure Key Vault for managing secrets securely.  
 Created an Azure Data Factory for orchestrating data pipelines.  
 
+<p align="center">
 <img src="./assets/az-resources.png" width="600">  
-
-<img src="./assets/databricks-mount.png" width="600">  
+</p>
 
 
 2. Database and Table Design  
@@ -59,7 +61,9 @@ Defined database tables for storing Tibia-related data.
 Refined table schemas with ChatGPT's assistance.  
 Populated the database with sample data.  
 
+<p align="center">
 <img src="./assets/db-tables.png" width="300">  
+</p>
 
 3. Data Ingestion with Azure Data Factory  
 Created pipelines in ADF to:  
@@ -67,7 +71,14 @@ Use Lookup activity to list database tables.
 Query data from each table and copy it to the landing zone in Parquet format.  
 Established Linked Services to connect ADF with Azure SQL Database, Data Lake, and Databricks.  
 
+<p align="center">
+<img src="./assets/adf-pipelines-datasets.png" height="500">  
+</p>
+
+
+<p align="center">
 <img src="./assets/lookup-loop-db.png" height="500">  
+</p>
 
 4. Data Processing with Databricks  
 Mounted the Data Lake to Databricks using a cluster.  
@@ -76,16 +87,22 @@ Bronze Layer: Raw ingested data.
 Silver Layer: Cleansed and enriched data.  
 Gold Layer: Aggregated data for analysis.  
 
+<p align="center">
 <img src="./assets/databricks-cluster.png">  
+</p>
 
+<p align="center">
 <img src="./assets/databricks-mount.png" height="400">  
+</p>
 
+<p align="center">
 <img src="./assets/medallion-architecture.png">  
-
+</p>
 
 5. Integration and Automation  
 Linked Databricks notebooks to ADF pipelines.  
 Configured ADF to trigger Databricks jobs for data processing.  
 
+<p align="center">
 <img src="./assets/adf-medallion-ingestion.png" width="600">  
-
+</p>
