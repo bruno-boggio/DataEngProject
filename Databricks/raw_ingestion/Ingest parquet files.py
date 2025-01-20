@@ -54,5 +54,5 @@ for table_path in table_paths:
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC describe history tibia_lakehouse_raw.accounts
+# %sql
+# describe history tibia_lakehouse_raw.accounts

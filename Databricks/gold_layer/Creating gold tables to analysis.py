@@ -303,5 +303,5 @@ print(f"table: players_transactions created")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC describe history tibia_lakehouse_gold.accounts_players
+# %sql
+# describe history tibia_lakehouse_gold.accounts_players
