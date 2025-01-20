@@ -13,7 +13,7 @@ Resources created on Azure.
 - key vault
 - Cluster on Databricks
 
-<img src="./assets/az-resources.png" alt="Azure resources" width="300">
+<img src="./assets/az-resources.png" alt="Azure resources" width="500" height="450">
 
 
 So, how does it works
