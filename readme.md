@@ -1,53 +1,12 @@
 # Data Engineering Project: Building a Data Lakehouse with Azure and Databricks
 
-This project demonstrates how to design and implement a data lakehouse using Azure and Databricks. 
-It processes and stores data from the MMORPG game Tibia, showcasing a modern data engineering workflow.
-
-Technologies Used
-The project utilizes the following tools and services:
-
-##Azure:
-
-Azure Resource Group
-Azure Storage Account (Data Lake)
-Azure Data Factory
-Azure SQL Server
-Azure SQL Database
-Azure Key Vault
-Azure Databricks
-Databricks:
-
-##Databricks Clusters
-Databricks Notebooks
-Languages & Formats:
-
-Python (PySpark)
-SQL
-Parquet
-
-
-##Architecture
-The project follows a modern data lakehouse architecture, as shown below:
-
-Data Source: Structured data from the Tibia MMORPG game is stored in Azure SQL Database.
-Data Ingestion: Data is ingested into an Azure Data Lake (landing zone) in Parquet format using Azure Data Factory pipelines.
-Data Processing: Using Databricks, the data is processed through the bronze, silver, and gold layers in the medallion architecture.
-Storage: The processed data is stored in optimized formats for further analysis or reporting.
-Data Flow Overview:
-Azure SQL Database → ADF Pipelines → Data Lake (bronze, silver, gold) → Databricks Processing
-
-
-<img src="./assets/architecture.png" width="600">
-
-
-Data Engineering Project: Building a Data Lakehouse with Azure and Databricks
-Overview
+**Overview** 
 This project demonstrates how to design and implement a data lakehouse using Azure and Databricks. The goal is to store and process data from the MMORPG game Tibia, leveraging Azure services for data ingestion, transformation, and storage, following the medallion architecture (bronze, silver, and gold layers).
 
-Technologies Used
+**Technologies Used**
 The project utilizes the following tools and services:
 
-Azure:
+**Azure**:
 
 Azure Resource Group  
 Azure Storage Account (Data Lake)  
@@ -56,7 +15,8 @@ Azure SQL Server
 Azure SQL Database  
 Azure Key Vault  
 Azure Databricks  
-Databricks:
+
+**Databricks**:
 
 Databricks Clusters  
 Databricks Notebooks  
@@ -65,8 +25,10 @@ Languages & Formats:
 Python (PySpark)  
 SQL  
 Parquet  
-Architecture  
-The project follows a modern data lakehouse architecture, as shown below:
+
+
+**Architecture**  
+The project follows a modern data lakehouse architecture, as shown below:  
 
 Data Source: Structured data from the Tibia MMORPG game is stored in Azure SQL Database.  
 Data Ingestion: Data is ingested into an Azure Data Lake (landing zone) in Parquet format using Azure Data Factory pipelines.  
@@ -75,8 +37,12 @@ Storage: The processed data is stored in optimized formats for further analysis 
 Data Flow Overview:  
 Azure SQL Database → ADF Pipelines → Data Lake (bronze, silver, gold) → Databricks Processing  
 
-##Steps Implemented  
-1. Resource Setup on Azure  
+<img src="./assets/architecture.png" width="600">
+
+
+**Steps Implemented** 
+  
+1.  Resource Setup on Azure  
 Created an Azure Resource Group to manage resources.  
 Configured an Azure Storage Account with hierarchical namespace enabled to act as the Data Lake.  
 Deployed Azure SQL Server and SQL Database to host Tibia-related data.  
