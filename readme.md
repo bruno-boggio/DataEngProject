@@ -1,12 +1,12 @@
 # Data Engineering Project: Building a Data Lakehouse with Azure and Databricks
 
-**Overview** 
+# Overview 
 This project demonstrates how to design and implement a data lakehouse using Azure and Databricks. The goal is to store and process data from the MMORPG game Tibia, leveraging Azure services for data ingestion, transformation, and storage, following the medallion architecture (bronze, silver, and gold layers).
 
-**Technologies Used**
+## Technologies Used
 The project utilizes the following tools and services:
 
-**Azure**:
+## Azure:
 
 Azure Resource Group  
 Azure Storage Account (Data Lake)  
@@ -16,19 +16,19 @@ Azure SQL Database
 Azure Key Vault  
 Azure Databricks  
 
-**Databricks**:
+## Databricks:
 
 Databricks Clusters  
 Databricks Notebooks   
 
-Languages & Formats:   
+## Languages & Formats:   
 
 Python (PySpark)  
 SQL  
 Parquet  
 
 
-**Architecture**  
+# Architecture
 The project follows a modern data lakehouse architecture, as shown below:  
 
 Data Source: Structured data from the Tibia MMORPG game is stored in Azure SQL Database.  
@@ -42,9 +42,9 @@ Azure SQL Database → ADF Pipelines → Data Lake (bronze, silver, gold) → Da
 <img src="./assets/architecture.png" width="600" margin="0 auto">
 </p>
 
-**Steps Implemented** 
+# Steps Implemented
 
-1.  Resource Setup on Azure  
+### 1.  Resource Setup on Azure  
 Created an Azure Resource Group to manage resources.  
 Configured an Azure Storage Account with hierarchical namespace enabled to act as the Data Lake.  
 Deployed Azure SQL Server and SQL Database to host Tibia-related data.  
@@ -56,7 +56,7 @@ Created an Azure Data Factory for orchestrating data pipelines.
 </p>
 
 
-2. Database and Table Design  
+### 2. Database and Table Design  
 Defined database tables for storing Tibia-related data.  
 Refined table schemas with ChatGPT's assistance.  
 Populated the database with sample data.  
@@ -65,7 +65,7 @@ Populated the database with sample data.
 <img src="./assets/db-tables.png" width="300">  
 </p>
 
-3. Data Ingestion with Azure Data Factory  
+### 3. Data Ingestion with Azure Data Factory  
 Created pipelines in ADF to:  
 Use Lookup activity to list database tables.  
 Query data from each table and copy it to the landing zone in Parquet format.  
@@ -80,7 +80,7 @@ Established Linked Services to connect ADF with Azure SQL Database, Data Lake, a
 <img src="./assets/lookup-loop-db.png" height="500">  
 </p>
 
-4. Data Processing with Databricks  
+### 4. Data Processing with Databricks  
 Mounted the Data Lake to Databricks using a cluster.  
 Implemented PySpark notebooks to process data through the medallion architecture:  
 Bronze Layer: Raw ingested data.  
@@ -99,7 +99,7 @@ Gold Layer: Aggregated data for analysis.
 <img src="./assets/medallion-architecture.png">  
 </p>
 
-5. Integration and Automation  
+### 5. Integration and Automation  
 Linked Databricks notebooks to ADF pipelines.  
 Configured ADF to trigger Databricks jobs for data processing.  
 
