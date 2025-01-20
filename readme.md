@@ -13,6 +13,9 @@ Resources created on Azure.
 - key vault
 - Cluster on Databricks
 
+<img src="./assets/az-resources.png" alt="Azure resources" width="300">
+
+
 So, how does it works
 
 I used ChatGPT to help me to define tables related to Tibia, to do that i created a Azure sql Server to host my
