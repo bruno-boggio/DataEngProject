@@ -20,7 +20,7 @@ accounts_df = (
 )
 
 # Display the cleaned data
-accounts_df.printSchema()
+accounts_df.display()
 
 # Save the cleaned data to the silver layer (overwrite the existing table)
 accounts_df.write.format("delta").option("mergeSchema",True).mode("overwrite").saveAsTable("tibia_lakehouse_silver.accounts")
@@ -61,7 +61,7 @@ columns.insert(-1, "raw_timestamp")  # Insert "raw_timestamp" in the penultimate
 players_df = players_df.select(columns)
 
 # Step 4: Display the transformed data (optional)
-players_df.printSchema()
+players_df.display()
 
 # Step 5: Save the transformed data to the Silver Layer (table tibia_lakehouse_silver.players)
 players_df.write.format("delta") \
@@ -84,7 +84,7 @@ achievements_df = (
 )
 
 # Display the cleaned and transformed data
-achievements_df.printSchema()
+achievements_df.display()
 
 # Save the transformed data to the silver layer (tibia_lakehouse_silver)
 achievements_df.write.format("delta").mode("overwrite").saveAsTable("tibia_lakehouse_silver.achievements")
@@ -116,7 +116,7 @@ columns.insert(-1, "raw_timestamp")  # Insert "raw_timestamp" in the penultimate
 guilds_df = guilds_df.select(columns)
 
 # Display the cleaned data
-guilds_df.printSchema()
+guilds_df.display()
 
 # Save the cleaned and transformed data to the silver layer
 guilds_df.write.format("delta").option("mergeSchema", "true").mode("overwrite").saveAsTable("tibia_lakehouse_silver.guilds")
@@ -137,8 +137,7 @@ items_df = (
 )
 
 # Display the cleaned and transformed data
-items_df.printSchema()
-
+items_df.display()
 # Save the transformed data to the silver layer (tibia_lakehouse_silver)
 items_df.write.format("delta").mode("overwrite").saveAsTable("tibia_lakehouse_silver.items")
 
@@ -169,7 +168,7 @@ columns.insert(-1, "raw_timestamp")  # Insert "raw_timestamp" in the penultimate
 transactions_df = transactions_df.select(columns)
 
 # Step 4: Display the cleaned DataFrame
-transactions_df.printSchema()
+transactions_df.display()
 
 # Step 5: Save the cleaned DataFrame to the "tibia_lakehouse_silver" layer
 transactions_df.write.format("delta").option("mergeSchema","true").mode("overwrite").saveAsTable("tibia_lakehouse_silver.transactions")

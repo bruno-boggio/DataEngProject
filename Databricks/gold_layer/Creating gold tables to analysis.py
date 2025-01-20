@@ -303,4 +303,5 @@ print(f"table: players_transactions created")
 
 # COMMAND ----------
 
-spark.sql("DESCRIBE HISTORY tibia_lakehouse_gold.accounts_players").display()
+# MAGIC %sql
+# MAGIC describe history tibia_lakehouse_gold.accounts_players
