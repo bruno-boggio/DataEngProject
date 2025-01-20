@@ -56,8 +56,3 @@ for table_path in table_paths:
 
 # MAGIC %sql
 # MAGIC describe history tibia_lakehouse_raw.accounts
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC select * from tibia_lakehouse_raw.players

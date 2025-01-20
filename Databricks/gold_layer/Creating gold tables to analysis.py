@@ -1,6 +1,6 @@
 # Databricks notebook source
 from pyspark.sql import functions as F
-from pyspark.sql.functions import count, avg, max, min, sum, round, countDistinct
+from pyspark.sql.functions import count, avg, max, min, sum, round,ceil, countDistinct
 
 
 # COMMAND ----------
@@ -173,8 +173,6 @@ print(f"table: players_items created")
 
 # COMMAND ----------
 
-from pyspark.sql.functions import count, countDistinct, avg, max, round
-
 # Load the players_items table
 players_items_df = spark.read.table("tibia_lakehouse_gold.players_items")
 
@@ -302,3 +300,7 @@ players_transactions_df.write.format('delta').mode('overwrite').saveAsTable("tib
 # Print confirmation message
 print(f"table: players_transactions created")
 
+
+# COMMAND ----------
+
+spark.sql("DESCRIBE HISTORY tibia_lakehouse_gold.accounts_players").display()

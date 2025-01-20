@@ -180,5 +180,5 @@ print(f"Table transactions has been saved!")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC **Creating tables through joins**
+# MAGIC %sql
+# MAGIC describe history tibia_lakehouse_silver.players
